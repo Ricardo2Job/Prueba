@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './styleAdminInicio.css';
+import './StyleAdminInicio.css';
 import logo from '../imagenes/logo.png';
 import { FaSearch } from 'react-icons/fa'; // Asegúrate de instalar react-icons
 
