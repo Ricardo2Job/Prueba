@@ -16,116 +16,66 @@ mongoose.connect(process.env.MONGO_URI, {
 }).then(() => console.log('MongoDB Connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
-// Define the Libro model (corresponds to the "libros" collection in MongoDB)
-const libroSchema = new mongoose.Schema({
-    nombre_libro: String,
-    autor: String,
-    cantidad_total: Number,
-    cantidad_reservada: Number,
-    fecha_agregacion: Date,
-    ultima_actualizacion: Date,
-    reservas_historicas: Number,
-    reservas_mensuales: Number,
+// Definir el esquema para las reservas
+const reservaSchema = new mongoose.Schema({
+    nombre_usuario: String,
+    libro_reservado: String,
+    fecha_reserva: Date,
+    estado: { type: String, default: 'Activa' }, // Estado de la reserva (por defecto activa)
+    fecha_limite: Date, // Fecha límite para devolver el libro (si es necesario)
 });
 
-const Libro = mongoose.model('Libro', libroSchema);
+// Crear el modelo de Reserva
+const Reserva = mongoose.model('Reserva', reservaSchema);
 
-// Ruta para obtener todos los libros
-app.get('/libros', async (req, res) => {
+// Ruta para obtener todas las reservas
+app.get('/reservas', async (req, res) => {
     try {
-        const libros = await Libro.find(); // Fetch all books
-        res.json(libros);
+        const reservas = await Reserva.find(); // Obtener todas las reservas
+        res.json(reservas);
     } catch (err) {
-        res.status(500).send('Error al obtener los libros: ' + err.message);
+        res.status(500).send('Error al obtener las reservas: ' + err.message);
     }
 });
 
-// Ruta para insertar un nuevo libro
-app.post('/libros', async (req, res) => {
+// Ruta para insertar una nueva reserva
+app.post('/reservas', async (req, res) => {
     try {
-        const { nombre_libro, autor, cantidad_total, cantidad_reservada, reservas_historicas, reservas_mensuales } = req.body;
+        const { nombre_usuario, libro_reservado, fecha_reserva, fecha_limite } = req.body;
 
-        // Crea un nuevo libro
-        const nuevoLibro = new Libro({
-            nombre_libro,
-            autor,
-            cantidad_total,
-            cantidad_reservada,
-            reservas_historicas,
-            reservas_mensuales,
-            fecha_agregacion: new Date(),
-            ultima_actualizacion: new Date(),
+        // Crear una nueva reserva
+        const nuevaReserva = new Reserva({
+            nombre_usuario,
+            libro_reservado,
+            fecha_reserva,
+            fecha_limite,
         });
 
-        // Guarda el libro en la base de datos
-        await nuevoLibro.save();
+        // Guardar la reserva en la base de datos
+        await nuevaReserva.save();
 
-        // Responde con el libro insertado
-        res.status(201).json(nuevoLibro);
+        // Responder con la reserva creada
+        res.status(201).json(nuevaReserva);
     } catch (err) {
-        res.status(500).send('Error al insertar el libro: ' + err.message);
+        res.status(500).send('Error al insertar la reserva: ' + err.message);
     }
 });
 
-// Ruta para eliminar un libro por ID
-app.delete('/libros/:_id', async (req, res) => {
+// Ruta para eliminar una reserva por ID
+app.delete('/reservas/:id', async (req, res) => {
     try {
-        const { _id } = req.params;
-        console.log('El ID recibido para eliminar:', _id); // Debug
-        const libroEliminado = await Libro.findByIdAndDelete(_id);
-
-        if (!libroEliminado) {
-            return res.status(404).json({ message: 'Libro no encontrado' });
+        const reservaEliminada = await Reserva.findByIdAndDelete(req.params.id);
+        if (!reservaEliminada) {
+            return res.status(404).json({ error: 'Reserva no encontrada' });
         }
-
-        res.status(200).json({ message: 'Libro eliminado exitosamente', libro: libroEliminado });
-    } catch (err) {
-        res.status(500).send('Error al eliminar el libro: ' + err.message);
+        res.json({ message: 'Reserva eliminada correctamente' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar la reserva' });
     }
 });
-// server.js
-// Añadimos el esquema de préstamos
-const prestamoSchema = new mongoose.Schema({
-    id_usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' },
-    id_libro: { type: mongoose.Schema.Types.ObjectId, ref: 'Libro' },
-    fecha_reserva: Date,
-    fecha_limite: Date,
-  });
-  
-  const Prestamo = mongoose.model('Prestamo', prestamoSchema);
-  
-  // Ruta para obtener todos los préstamos
-  app.get('/prestamos', async (req, res) => {
-    try {
-      const prestamos = await Prestamo.find().populate('id_usuario id_libro');
-      res.json(prestamos);
-    } catch (err) {
-      res.status(500).send('Error al obtener los préstamos: ' + err.message);
-    }
-  });
-  
-  // Ruta para insertar un nuevo préstamo
-  app.post('/prestamos', async (req, res) => {
-    try {
-      const prestamo = new Prestamo(req.body);
-      await prestamo.save();
-      res.status(201).json(prestamo);
-    } catch (err) {
-      res.status(500).send('Error al agregar el préstamo: ' + err.message);
-    }
-  });
-  
-  // Ruta para eliminar un préstamo
-  app.delete('/prestamos/:id', async (req, res) => {
-    try {
-      await Prestamo.findByIdAndDelete(req.params.id);
-      res.status(204).send();
-    } catch (err) {
-      res.status(500).send('Error al eliminar el préstamo: ' + err.message);
-    }
-  });
-  
 
-// Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Iniciar el servidor
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+    console.log(`Servidor corriendo en http://localhost:${port}`);
+});

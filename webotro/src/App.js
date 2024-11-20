@@ -34,6 +34,7 @@ function App() {
 
       {currentPage === 'prestamo' && (
         <div className="prestamo-content">
+          <Dashboard navigateTo={navigateTo} /> {/* Incluir Dashboard aquí */}
           <Prestamo />
         </div>
       )}
