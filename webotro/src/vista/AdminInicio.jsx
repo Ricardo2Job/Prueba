@@ -1,84 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Asegúrate de importar axios
 import './StyleAdminInicio.css';
 import logo from '../imagenes/logo.png';
 import { FaSearch } from 'react-icons/fa'; // Asegúrate de instalar react-icons
 
 const AdminInicio = () => {
-  const [users, setUsers] = useState([]);  // Se eliminan los datos de ejemplo
-
+  const [books, setBooks] = useState([]);  // Para almacenar los libros
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortCriteria, setSortCriteria] = useState('nombre');
+  const [sortCriteria, setSortCriteria] = useState('nombre_libro');
   const [sortOrder, setSortOrder] = useState('asc');
 
-  const [newUser, setNewUser] = useState({
-    rut: '',
-    nombre: '',
-    apellido: '',
-    direccion: '',
-    telefono: '',
-    libro: '',
-    fechaReserva: '',
-    fechaDevolucion: '',
-    estado: 'Entregado',
-    deuda: 'No hay deuda'
-  });
+  // Fetch libros from the backend
+  useEffect(() => {
+    axios.get('http://localhost:5002/books')  // Asegúrate de que esta URL sea la correcta
+      .then(response => {
+        setBooks(response.data);
+      })
+      .catch(error => {
+        console.error("Hubo un error al obtener los libros:", error);
+      });
+  }, []); // Esta dependencia vacía hace que se ejecute solo una vez al montar el componente.
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewUser({ ...newUser, [name]: value });
-  };
-
-  const handleUserRegister = (e) => {
-    e.preventDefault();
-    setUsers([...users, newUser]);
-    setNewUser({
-      rut: '',
-      nombre: '',
-      apellido: '',
-      direccion: '',
-      telefono: '',
-      libro: '',
-      fechaReserva: '',
-      fechaDevolucion: '',
-      estado: 'Entregado',
-      deuda: 'No hay deuda'
-    }); // Resetear el formulario
-  };
-
-  const handleAddUser = () => {
-    setUsers([...users, newUser]);
-    setNewUser({
-      rut: '',
-      nombre: '',
-      apellido: '',
-      direccion: '',
-      telefono: '',
-      libro: '',
-      fechaReserva: '',
-      fechaDevolucion: '',
-      estado: 'Entregado',
-      deuda: 'No hay deuda'
-    }); // Resetear el formulario
-  };
-
-  const filteredUsers = users.filter(user =>
-    user.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.rut.includes(searchTerm)
+  const filteredBooks = books.filter(book =>
+    book.nombre_libro.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    book.autor.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const sortedUsers = filteredUsers.sort((a, b) => {
+  const sortedBooks = filteredBooks.sort((a, b) => {
     let comparison = 0;
-    if (sortCriteria === 'nombre') {
-      comparison = a.nombre.localeCompare(b.nombre);
-    } else if (sortCriteria === 'fecha') {
-      comparison = new Date(a.fechaReserva) - new Date(b.fechaReserva);
-    } else if (sortCriteria === 'deuda') {
-      comparison = a.deuda === 'No hay deuda' ? -1 : 1;
+    if (sortCriteria === 'nombre_libro') {
+      comparison = a.nombre_libro.localeCompare(b.nombre_libro);
+    } else if (sortCriteria === 'fecha_agregacion') {
+      comparison = new Date(a.fecha_agregacion) - new Date(b.fecha_agregacion);
     }
     return sortOrder === 'asc' ? comparison : -comparison;
   });
@@ -101,14 +58,14 @@ const AdminInicio = () => {
         </ul>
       </nav>
       <main className="contenido">
-        <h2>Lista de Usuarios</h2>
+        <h2>Lista de Libros</h2>
         <div className="buscador-container">
-          <input 
-            type="text" 
-            placeholder="Buscar..." 
-            className="buscador" 
-            value={searchTerm} 
-            onChange={handleSearchChange} 
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className="buscador"
+            value={searchTerm}
+            onChange={handleSearchChange}
           />
           <FaSearch className="buscador-icon" />
         </div>
@@ -116,9 +73,8 @@ const AdminInicio = () => {
         <div className="filtros">
           <label>Ordenar por:</label>
           <select onChange={e => setSortCriteria(e.target.value)}>
-            <option value="nombre">Nombre</option>
-            <option value="fecha">Fecha de Reserva</option>
-            <option value="deuda">Deuda</option>
+            <option value="nombre_libro">Título</option>
+            <option value="fecha_agregacion">Fecha de Agregación</option>
           </select>
           <select onChange={e => setSortOrder(e.target.value)}>
             <option value="asc">Ascendente</option>
@@ -126,78 +82,29 @@ const AdminInicio = () => {
           </select>
         </div>
 
-        <table className="tabla-usuarios">
+        <table className="tabla-libros">
           <thead>
             <tr>
-              <th>RUT</th>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Dirección</th>
-              <th>Teléfono</th>
-              <th>Libros Atrasados</th>
-              <th>Fecha de Reserva</th>
-              <th>Fecha de Devolución</th>
-              <th>Estado</th>
-              <th>Deuda</th>
+              <th>Título</th>
+              <th>Autor</th>
+              <th>Fecha de Agregación</th>
+              <th>Cantidad Disponible</th>
+              <th>Reservas Históricas</th>
             </tr>
           </thead>
           <tbody>
-            {sortedUsers.map((user, index) => (
+            {sortedBooks.map((book, index) => (
               <tr key={index}>
-                <td>{user.rut}</td>
-                <td>{user.nombre}</td>
-                <td>{user.apellido}</td>
-                <td>{user.direccion}</td>
-                <td>{user.telefono}</td>
-                <td>{user.libro}</td>
-                <td>{user.fechaReserva}</td>
-                <td>{user.fechaDevolucion}</td>
-                <td>{user.estado}</td>
-                <td>{user.deuda}</td>
+                <td>{book.nombre_libro}</td>
+                <td>{book.autor}</td>
+                <td>{new Date(book.fecha_agregacion).toLocaleDateString()}</td>
+                <td>{book.cantidad_total - book.cantidad_reservada}</td>
+                <td>{book.reservas_historicas}</td>
               </tr>
             ))}
           </tbody>
         </table>
-
-        <div className="agregar-usuario">
-          <h2>Agregar Usuario</h2>
-          <input 
-            type="text" 
-            placeholder="RUT" 
-            value={newUser.rut} 
-            onChange={e => setNewUser({ ...newUser, rut: e.target.value })} 
-          />
-          <input 
-            type="text" 
-            placeholder="Nombre" 
-            value={newUser.nombre} 
-            onChange={e => setNewUser({ ...newUser, nombre: e.target.value })} 
-          />
-          <input 
-            type="text" 
-            placeholder="Apellido" 
-            value={newUser.apellido} 
-            onChange={e => setNewUser({ ...newUser, apellido: e.target.value })} 
-          />
-          <input 
-            type="text" 
-            placeholder="Dirección" 
-            value={newUser.direccion} 
-            onChange={e => setNewUser({ ...newUser, direccion: e.target.value })} 
-          />
-          <input 
-            type="text" 
-            placeholder="Teléfono" 
-            value={newUser.telefono} 
-            onChange={e => setNewUser({ ...newUser, telefono: e.target.value })} 
-          />
-          <input type="file" accept="image/*" className="input-file" />
-          <button onClick={handleAddUser}>Agregar Usuario</button>
-        </div>
       </main>
-      <footer className="footer">
-        <p>Biblioteca de la JerryClase que no se que poner</p>
-      </footer>
     </div>
   );
 };
