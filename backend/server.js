@@ -83,8 +83,48 @@ app.delete('/libros/:_id', async (req, res) => {
         res.status(500).send('Error al eliminar el libro: ' + err.message);
     }
 });
-
-
+// server.js
+// Añadimos el esquema de préstamos
+const prestamoSchema = new mongoose.Schema({
+    id_usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' },
+    id_libro: { type: mongoose.Schema.Types.ObjectId, ref: 'Libro' },
+    fecha_reserva: Date,
+    fecha_limite: Date,
+  });
+  
+  const Prestamo = mongoose.model('Prestamo', prestamoSchema);
+  
+  // Ruta para obtener todos los préstamos
+  app.get('/prestamos', async (req, res) => {
+    try {
+      const prestamos = await Prestamo.find().populate('id_usuario id_libro');
+      res.json(prestamos);
+    } catch (err) {
+      res.status(500).send('Error al obtener los préstamos: ' + err.message);
+    }
+  });
+  
+  // Ruta para insertar un nuevo préstamo
+  app.post('/prestamos', async (req, res) => {
+    try {
+      const prestamo = new Prestamo(req.body);
+      await prestamo.save();
+      res.status(201).json(prestamo);
+    } catch (err) {
+      res.status(500).send('Error al agregar el préstamo: ' + err.message);
+    }
+  });
+  
+  // Ruta para eliminar un préstamo
+  app.delete('/prestamos/:id', async (req, res) => {
+    try {
+      await Prestamo.findByIdAndDelete(req.params.id);
+      res.status(204).send();
+    } catch (err) {
+      res.status(500).send('Error al eliminar el préstamo: ' + err.message);
+    }
+  });
+  
 
 // Start the server
 const PORT = process.env.PORT || 5000;
