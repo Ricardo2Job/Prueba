@@ -1,26 +1,25 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
-
 const app = express();
+const port = 3000;  // Puerto del backend
 
-// Middleware
+// Usar CORS para permitir solicitudes desde el frontend en otro puerto (3000)
 app.use(cors());
+
+// Middleware para parsear JSON
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/biblioteca_db', {
+// Conectar a MongoDB usando Mongoose
+mongoose.connect('mongodb+srv://dweb:1234@desarrolloweb.k2vh2.mongodb.net/biblioteca_db', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => console.log('MongoDB Connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+})
+.then(() => console.log('Conectado a la base de datos'))
+.catch((err) => console.error('Error al conectar a la base de datos:', err));
 
-// Ruta inicial
-app.get('/', (req, res) => res.send('API is running...'));
-
-// Esquema y modelo de libros
-const LibroSchema = new mongoose.Schema({
+// Definir el esquema de libro
+const bookSchema = new mongoose.Schema({
   nombre_libro: String,
   autor: String,
   cantidad_total: Number,
@@ -28,43 +27,23 @@ const LibroSchema = new mongoose.Schema({
   fecha_agregacion: Date,
   ultima_actualizacion: Date,
   reservas_historicas: Number,
-  reservas_mensuales: Number
+  reservas_mensuales: Number,
 });
 
-// Crear el modelo para la colección 'libros'
-const Libro = mongoose.model('Libro', LibroSchema, 'libros');
+// Crear un modelo de libro
+const Book = mongoose.model('Book', bookSchema);
 
 // Ruta para obtener todos los libros
-app.get('/books', async (req, res) => {
-  try {
-    const libros = await Libro.find();  // Obtener todos los libros
-    res.json(libros);
-  } catch (err) {
-    res.status(500).send(err.message);  // Manejar errores
-  }
-});
-
-// Ruta para agregar un nuevo libro
-app.post('/books', async (req, res) => {
-  const { nombre_libro, autor, cantidad_total, cantidad_reservada, fecha_agregacion, ultima_actualizacion, reservas_historicas, reservas_mensuales } = req.body;
-  try {
-    const newBook = new Libro({
-      nombre_libro,
-      autor,
-      cantidad_total,
-      cantidad_reservada,
-      fecha_agregacion,
-      ultima_actualizacion,
-      reservas_historicas,
-      reservas_mensuales
+app.get('/books', (req, res) => {
+  Book.find()  // Buscar todos los libros en la base de datos
+    .then((books) => res.json(books))  // Enviar los libros como respuesta en formato JSON
+    .catch((err) => {
+      console.error('Error al obtener los libros:', err);
+      res.status(500).send('Error al obtener los libros');
     });
-    await newBook.save();  // Guardar el nuevo libro
-    res.status(201).json(newBook);
-  } catch (err) {
-    res.status(500).send(err.message);  // Manejar errores
-  }
 });
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 5002;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
+});
