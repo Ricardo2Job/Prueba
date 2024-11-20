@@ -1,0 +1,75 @@
+.libros-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .libros-content {
+    margin-left: 220px; /* Espacio para el Dashboard */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tabla-libros {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .tabla-libros th,
+  .tabla-libros td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .tabla-libros th {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .tabla-libros tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .tabla-libros tr:hover {
+    background-color: #ddd;
+  }
+  
+  .form-libro {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .form-libro label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-libro input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .form-libro button {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .form-libro button:hover {
+    background-color: #5a6268;
+  }
+  

@@ -30,10 +30,7 @@ const libroSchema = new mongoose.Schema({
 
 const Libro = mongoose.model('Libro', libroSchema);
 
-// Routes
-app.get('/', (req, res) => res.send('API is running...'));
-
-// Route to get all books
+// Ruta para obtener todos los libros
 app.get('/libros', async (req, res) => {
     try {
         const libros = await Libro.find(); // Fetch all books
@@ -45,30 +42,48 @@ app.get('/libros', async (req, res) => {
 
 // Ruta para insertar un nuevo libro
 app.post('/libros', async (req, res) => {
-  try {
-      const { nombre_libro, autor, cantidad_total, cantidad_reservada, reservas_historicas, reservas_mensuales } = req.body;
+    try {
+        const { nombre_libro, autor, cantidad_total, cantidad_reservada, reservas_historicas, reservas_mensuales } = req.body;
 
-      // Crea un nuevo libro
-      const nuevoLibro = new Libro({
-          nombre_libro,
-          autor,
-          cantidad_total,
-          cantidad_reservada,
-          reservas_historicas,
-          reservas_mensuales,
-          fecha_agregacion: new Date(),
-          ultima_actualizacion: new Date(),
-      });
+        // Crea un nuevo libro
+        const nuevoLibro = new Libro({
+            nombre_libro,
+            autor,
+            cantidad_total,
+            cantidad_reservada,
+            reservas_historicas,
+            reservas_mensuales,
+            fecha_agregacion: new Date(),
+            ultima_actualizacion: new Date(),
+        });
 
-      // Guarda el libro en la base de datos
-      await nuevoLibro.save();
+        // Guarda el libro en la base de datos
+        await nuevoLibro.save();
 
-      // Responde con el libro insertado
-      res.status(201).json(nuevoLibro);
-  } catch (err) {
-      res.status(500).send('Error al insertar el libro: ' + err.message);
-  }
+        // Responde con el libro insertado
+        res.status(201).json(nuevoLibro);
+    } catch (err) {
+        res.status(500).send('Error al insertar el libro: ' + err.message);
+    }
 });
+
+// Ruta para eliminar un libro por ID
+app.delete('/libros/:_id', async (req, res) => {
+    try {
+        const { _id } = req.params;
+        console.log('El ID recibido para eliminar:', _id); // Debug
+        const libroEliminado = await Libro.findByIdAndDelete(_id);
+
+        if (!libroEliminado) {
+            return res.status(404).json({ message: 'Libro no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Libro eliminado exitosamente', libro: libroEliminado });
+    } catch (err) {
+        res.status(500).send('Error al eliminar el libro: ' + err.message);
+    }
+});
+
 
 
 // Start the server
