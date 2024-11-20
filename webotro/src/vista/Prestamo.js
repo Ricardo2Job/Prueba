@@ -1,119 +1,54 @@
-import React, { useState, useEffect } from 'react';
+// src/vista/Prestamo.js
+
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './StylePrestamos.css'; // Puedes modificar el estilo según lo necesites
+import './StylePrestamo.css';  // Archivo CSS para los estilos de la tabla
+import Footer from './Footer';
 
-const Prestamos = () => {
-    const [reservas, setReservas] = useState([]);
-    const [formData, setFormData] = useState({
-        nombre_usuario: '',
-        libro_reservado: '',
-        fecha_reserva: '',
-    });
+const Prestamo = () => {
+    const [prestamos, setPrestamos] = useState([]);
 
-    // Obtener reservas del servidor
+    // Fetch prestamos from the backend API
     useEffect(() => {
-        axios
-            .get('http://localhost:5000/reservas') // Asegúrate de que la URL sea correcta
-            .then((response) => setReservas(response.data))
-            .catch((error) => console.error('Error al obtener reservas:', error));
+        axios.get('http://localhost:5000/prestamos') // Suponiendo que esta es la ruta que devuelve los datos de los prestamos
+            .then(response => {
+                setPrestamos(response.data); // Almacena los datos de los prestamos en el estado
+            })
+            .catch(error => {
+                console.error('Error al obtener los préstamos:', error);
+            });
     }, []);
 
-    // Manejar cambios en el formulario
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    // Agregar reserva
-    const handleAddReserva = (e) => {
-        e.preventDefault();
-        axios
-            .post('http://localhost:5000/reservas', formData) // Asegúrate de que la URL sea correcta
-            .then((response) => {
-                setReservas([...reservas, response.data]);
-                setFormData({ nombre_usuario: '', libro_reservado: '', fecha_reserva: '' });
-            })
-            .catch((error) => console.error('Error al agregar reserva:', error));
-    };
-
-    // Eliminar reserva
-    const handleEliminar = (id) => {
-        axios
-            .delete(`http://localhost:5000/reservas/${id}`) // Asegúrate de que la URL sea correcta
-            .then(() => {
-                setReservas(reservas.filter((reserva) => reserva._id !== id));
-                alert('Reserva eliminada correctamente');
-            })
-            .catch((error) => console.error('Error al eliminar reserva:', error));
-    };
-
     return (
-        <div className="prestamos-container">
-            <h1>Gestión de Reservas (Préstamos)</h1>
+        <div className="prestamo-container">
+            <h1>Dashboard de Préstamos</h1>
 
-            {/* Tabla de reservas */}
-            <table className="tabla-reservas">
+            <table className="tabla-prestamos">
                 <thead>
                     <tr>
-                        <th>ID Reserva</th>
-                        <th>Nombre del Usuario</th>
-                        <th>Libro Reservado</th>
+                        <th>ID Préstamo</th>
+                        <th>ID Usuario</th>
+                        <th>ID Libro</th>
                         <th>Fecha de Reserva</th>
-                        <th>Acciones</th>
+                        <th>Fecha Límite</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {reservas.map((reserva) => (
-                        <tr key={reserva._id}>
-                            <td>{reserva._id}</td>
-                            <td>{reserva.nombre_usuario}</td>
-                            <td>{reserva.libro_reservado}</td>
-                            <td>{reserva.fecha_reserva}</td>
-                            <td>
-                                <button onClick={() => handleEliminar(reserva._id)}>Eliminar</button>
-                            </td>
+                    {prestamos.map((prestamo) => (
+                        <tr key={prestamo._id}>
+                            <td>{prestamo._id}</td>
+                            <td>{prestamo.id_usuario}</td>
+                            <td>{prestamo.id_libro}</td>
+                            <td>{new Date(prestamo.fecha_reserva).toLocaleDateString()}</td>
+                            <td>{new Date(prestamo.fecha_limite).toLocaleDateString()}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
 
-            {/* Formulario para agregar una nueva reserva */}
-            <form onSubmit={handleAddReserva} className="form-reserva">
-                <h2>Agregar Reserva</h2>
-                <div>
-                    <label>Nombre del Usuario:</label>
-                    <input
-                        type="text"
-                        name="nombre_usuario"
-                        value={formData.nombre_usuario}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Libro Reservado:</label>
-                    <input
-                        type="text"
-                        name="libro_reservado"
-                        value={formData.libro_reservado}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Fecha de Reserva:</label>
-                    <input
-                        type="date"
-                        name="fecha_reserva"
-                        value={formData.fecha_reserva}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <button type="submit">Agregar</button>
-            </form>
+            <Footer /> {/* Aquí se agrega el Footer */}
         </div>
     );
 };
 
-export default Prestamos;
+export default Prestamo;
