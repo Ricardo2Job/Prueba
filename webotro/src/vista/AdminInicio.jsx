@@ -4,18 +4,7 @@ import logo from '../imagenes/logo.png';
 import { FaSearch } from 'react-icons/fa'; // Asegúrate de instalar react-icons
 
 const AdminInicio = () => {
-    const [users, setUsers] = useState([
-      { rut: '12345678-9', nombre: 'Juan', apellido: 'Pérez', direccion: 'Calle Falsa 123', telefono: '987654321', libro: 'El Gran Gatsby', fechaReserva: '2024-10-01', fechaDevolucion: '2024-10-15', estado: 'Atrasado', deuda: '$59410' },
-      { rut: '12345678-9', nombre: 'Juan', apellido: 'Pérez', direccion: 'Calle Falsa 123', telefono: '987654321', libro: '1984', fechaReserva: '2024-09-01', fechaDevolucion: '2024-09-15', estado: 'Entregado', deuda: 'No hay deuda' },
-      { rut: '23456789-0', nombre: 'Ana', apellido: 'Gómez', direccion: 'Calle Verdadera 456', telefono: '123456789', libro: 'Cien Años de Soledad', fechaReserva: '2024-09-20', fechaDevolucion: '2024-10-04', estado: 'Entregado', deuda: 'No hay deuda' },
-      { rut: '34567890-1', nombre: 'Luis', apellido: 'Martínez', direccion: 'Calle Imaginaria 789', telefono: '456789123', libro: 'El Quijote', fechaReserva: '2024-09-15', fechaDevolucion: '2024-09-30', estado: 'Atrasado', deuda: '$15000' },
-      { rut: '45678901-2', nombre: 'Sofía', apellido: 'López', direccion: 'Calle Real 101', telefono: '789123456', libro: 'La Casa de los Espíritus', fechaReserva: '2024-10-05', fechaDevolucion: '2024-10-12', estado: 'Entregado', deuda: 'No hay deuda' },
-      { rut: '56789012-3', nombre: 'Pedro', apellido: 'Rodríguez', direccion: 'Calle Histórica 202', telefono: '321654987', libro: 'Crónica de una muerte anunciada', fechaReserva: '2024-10-02', fechaDevolucion: '2024-10-10', estado: 'Atrasado', deuda: '$20000' },
-      { rut: '67890123-4', nombre: 'Lucía', apellido: 'Torres', direccion: 'Calle Central 303', telefono: '654321789', libro: 'Orgullo y Prejuicio', fechaReserva: '2024-09-25', fechaDevolucion: '2024-10-02', estado: 'Entregado', deuda: 'No hay deuda' },
-      { rut: '78901234-5', nombre: 'Carlos', apellido: 'Sánchez', direccion: 'Calle Norte 404', telefono: '987123654', libro: 'El Principito', fechaReserva: '2024-09-10', fechaDevolucion: '2024-09-25', estado: 'Atrasado', deuda: '$10000' },
-      { rut: '89012345-6', nombre: 'María', apellido: 'Fernández', direccion: 'Calle Sur 505', telefono: '123789456', libro: 'Moby Dick', fechaReserva: '2024-10-03', fechaDevolucion: '2024-10-20', estado: 'Atrasado', deuda: '$25000' },
-      { rut: '90123456-7', nombre: 'Javier', apellido: 'Jiménez', direccion: 'Calle Este 606', telefono: '456123789', libro: 'Cien Años de Soledad', fechaReserva: '2024-10-01', fechaDevolucion: '2024-10-15', estado: 'Entregado', deuda: 'No hay deuda' },
-    ]);
+  const [users, setUsers] = useState([]);  // Se eliminan los datos de ejemplo
 
   const [searchTerm, setSearchTerm] = useState('');
   const [sortCriteria, setSortCriteria] = useState('nombre');
