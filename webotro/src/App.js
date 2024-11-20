@@ -1,14 +1,14 @@
 // src/App.js
 
 import React from 'react';
-import AdminInicio from './vista/AdminInicio';
-import BooksList from './vista/BooksList';  // Importa el componente
+import './App.css';
+import AdminInicio from './vista/Adminprototipo';
+import Libros from './vista/Libros';
 
 function App() {
   return (
     <div className="App">
-      <h1>Mi Aplicación de Libros</h1>
-      <BooksList />    {/* Usamos el componente BooksList */}
+      <Libros />
     </div>
   );
 }
