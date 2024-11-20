@@ -1,0 +1,235 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .admin-inicio {
+    background-image: url('../imagenes/fondo.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .admin-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  .admin-body {
+    flex: 1;
+    background-color: #282c34; /* Fondo oscuro */
+    color: white; /* Color de texto blanco */
+  }
+  
+  .admin-logo {
+    width: 100px; /* Ajusta el tamaño del logo */
+  }
+  
+  .admin-title {
+    margin: 0; /* Elimina margen por defecto del h1 */
+  }
+  
+  /* Estilo para la navegación */
+  .admin-nav ul {
+    list-style: none; /* Elimina las viñetas */
+    padding: 0; /* Elimina el padding por defecto */
+  }
+  
+  .admin-nav li {
+    display: inline; /* Muestra los enlaces en línea */
+    margin: 0 15px; /* Espaciado entre los enlaces */
+  }
+  
+  .logo {
+    width: 70px; /* Ajustar el tamaño del logo para que no sea demasiado grande */
+  }
+  
+  .menu {
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo semi transparente para el menú */
+    width: 220px; /* Ancho del menú */
+    height: 100%; /* Altura total de la ventana */
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Elimina el padding extra del contenedor del menú */
+    position: fixed; /* Fija el menú a la izquierda */
+    top: 0; /* Elimina el espacio superior, menú empieza desde arriba */
+    z-index: 1; /* Mantiene el menú por encima del contenido */
+  }
+  
+  .menu ul {
+    list-style-type: none; /* Sin puntos en la lista */
+    padding: 0; /* Elimina el padding adicional de la lista */
+    margin: 0; /* Elimina cualquier margen adicional de la lista */
+  }
+  
+  .menu li {
+    padding: 15px; /* Espaciado en cada ítem del menú */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    color: white; /* Cambia el color de las letras a blanco */
+    font-size: 16px; /* Tamaño de la letra */
+    line-height: 1.5; /* Ajusta la altura de línea */
+  }
+  
+  .menu li:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Efecto al pasar el mouse */
+    color: #bcbcbc; /* Cambia el color de las letras al pasar el mouse */
+  }
+  
+  .contenido {
+    margin-left: 220px; /* Espacio para el menú fijo a la izquierda */
+    padding: 20px; /* Espaciado interno */
+    flex-grow: 1; /* Para que ocupe el espacio restante */
+    margin-top: 100px; /* Espacio para el encabezado fijo en la parte superior */
+    color: rgb(255, 255, 255); /* Color del texto */
+    overflow-y: auto; /* Permitir desplazamiento vertical si el contenido es mayor que el área visible */
+  }
+  
+  .agregar-usuario {
+    margin: 20px; /* Mayor margen para el bloque */
+    padding: 15px; /* Espaciado interior */
+    background-color: #302f30; /* Fondo para el bloque de agregar usuario */
+    border-radius: 8px; /* Bordes redondeados */
+  }
+  
+  /* Estilos para los campos de entrada */
+  .agregar-usuario input[type="text"] {
+    width: 100%; /* Asegura que los campos ocupen todo el ancho disponible */
+    padding: 10px; /* Espaciado interior para los campos */
+    margin-bottom: 10px; /* Espacio entre los campos */
+    border: 1px solid #ccc; /* Borde del campo */
+    border-radius: 4px; /* Bordes redondeados para los campos */
+    background-color: #52525a; /* Color de fondo inicial */
+    transition: background-color 0.3s; /* Transición suave para el cambio de color */
+  }
+  
+  /* Estilos específicos para el input de archivo */
+  .input-file {
+    background-color: transparent; /* Fondo transparente */
+    border: none; /* Sin borde */
+    margin-bottom: 10px; /* Espacio entre el campo de archivo y otros campos */
+  }
+  
+  /* Estilo para el botón */
+  button {
+    padding: 10px 20px; /* Espaciado interno del botón */
+    background-color: #007bff; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+  }
+  
+  /* Cambiar el color de fondo al hacer foco en los campos de texto */
+  .agregar-usuario input[type="text"]:focus {
+    background-color: #e0e0e0; /* Color de fondo al recibir foco */
+    outline: none; /* Eliminar el borde predeterminado del navegador */
+    border-color: #007bff; /* Cambiar el color del borde al recibir foco */
+  }
+  
+  
+  .agregar-usuario input {
+    display: block; /* Que cada input ocupe una línea */
+    margin: 10px 0; /* Espaciado entre inputs */
+    width: 100%; /* Ocupa el ancho completo */
+    padding: 10px; /* Relleno interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    color: #ffffff;
+  }
+  
+  .agregar-usuario button {
+    background-color: #364051; /* Color verde */
+    color: white; /* Color de texto */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+  }
+  
+  .agregar-usuario button:hover {
+    background-color: #231f34; /* Color más oscuro al pasar el mouse */
+  }
+  
+  .buscador {
+    margin-bottom: 20px; /* Espacio inferior */
+    padding: 10px; /* Espaciado interno */
+    width: 100%; /* Ocupa el ancho completo */
+    border-radius: 5px; /* Bordes redondeados */
+    border: none; /* Sin borde */
+  }
+  
+  .tabla-usuarios {
+    width: 100%; /* Tabla ocupa todo el ancho disponible */
+    border-collapse: collapse; /* Unir bordes de las celdas */
+    margin-top: 20px; /* Espacio superior */
+  }
+  
+  .dashboard {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: white; /* Cambia el color del texto a blanco */
+  }
+  
+  .tabla-usuarios th {
+    padding: 10px; /* Espaciado interno de las celdas */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Borde blanco semitransparente */
+    text-align: left; /* Alineación del texto */
+    background-color: rgba(255, 255, 255, 0.2); /* Fondo semi transparente */
+  }
+  
+  .tabla-usuarios td {
+    padding: 10px; /* Espaciado interno de las celdas */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Borde blanco semitransparente */
+    text-align: left; /* Alineación del texto */
+    background-color: transparent; /* Fondo transparente para las filas de datos */
+  }
+  
+  .foto-usuario {
+    width: 50px; /* Ajustar tamaño de la foto */
+    height: 50px; /* Ajustar tamaño de la foto */
+    border-radius: 50%; /* Hacer las fotos redondas */
+  }
+  
+  .footer {
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo semi transparente */
+    color: white; /* Color del texto */
+    text-align: center; /* Alinear texto al centro */
+    padding: 20px; /* Espaciado interno */
+    position: relative; /* Cambia la posición para que se ajuste al final del contenido */
+    bottom: 0; /* Alineado a la parte inferior */
+    width: 100%; /* Ocupa todo el ancho */
+    z-index: 2; /* Mantiene el pie de página por encima de otros elementos */
+  }
+  .buscador-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .buscador {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 250px;
+  }
+  
+  .buscador-icon {
+    margin-left: -30px; /* Ajusta según sea necesario */
+    color: #aaa;
+  }
+  

@@ -1,0 +1,20 @@
+/* Estilo para el Footer */
+.footer {
+    background-color: #4CAF50; /* Mismo color que el Dashboard */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(100%); /* Ocultar inicialmente */
+}
+
+.footer.visible {
+    transform: translateY(0); /* Mostrar cuando el usuario está al final de la página */
+}
+
+.footer.hidden {
+    transform: translateY(100%); /* Ocultar cuando el usuario no está al final */
+}
